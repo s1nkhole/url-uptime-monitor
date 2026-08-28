@@ -1,0 +1,58 @@
+{
+  "title": "URL Uptime Monitor — Overview",
+  "uid": "url-uptime-monitor-overview",
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "refresh": "10s",
+  "time": { "from": "now-1h", "to": "now" },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Checks per second by result",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "targets": [
+        {
+          "expr": "sum by (result) (rate(healthcheck_checks_total[1m]))",
+          "legendFormat": "{{result}}"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "External check latency (p95)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(healthcheck_latency_seconds_bucket[5m])) by (le, target_url))",
+          "legendFormat": "{{target_url}}"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Error rate (down / total, 5m)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "targets": [
+        {
+          "expr": "sum(rate(healthcheck_checks_total{result=\"down\"}[5m])) / sum(rate(healthcheck_checks_total[5m]))",
+          "legendFormat": "error rate"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "App request rate (uvicorn/FastAPI process)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "targets": [
+        {
+          "expr": "rate(process_cpu_seconds_total{job=\"url-uptime-monitor\"}[1m])",
+          "legendFormat": "cpu seconds/s"
+        }
+      ]
+    }
+  ]
+}
