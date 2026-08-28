@@ -1,0 +1,8 @@
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
+sqlalchemy==2.0.35
+psycopg2-binary==2.9.9
+requests==2.32.3
+prometheus-client==0.21.0
+pydantic==2.9.2
+python-dotenv==1.0.1
